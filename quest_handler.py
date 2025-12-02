@@ -4,7 +4,7 @@ Quest Handler Module - Starter Code
 
 Name: [Will Webster]
 
-AI Usage: [Fix errors]
+AI Usage: [Bug Fixes]
 
 This module handles quest management, dependencies, and completion.
 """
