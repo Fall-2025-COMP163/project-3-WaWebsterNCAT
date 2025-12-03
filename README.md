@@ -127,11 +127,73 @@ This project encourages creativity! Here's what you can customize:
 
 Document your project with:
 
-1. **Module Architecture:** Explain your module organization
-2. **Exception Strategy:** Describe when/why you raise specific exceptions
-3. **Design Choices:** Justify major decisions
-4. **AI Usage:** Detail what AI assistance you used
-5. **How to Play:** Instructions for running the game
+1. **Module Architecture:** Explain your module organization:
+
+The project is organized into independent modules, each responsible for a core system within the Quest Chronicles RPG. This modular architecture ensures separation of concerns, easier debugging, and clear organization:
+
+main.py
+Acts as the central game launcher. It loads game data, initializes modules, and provides a simple user interface to create characters, start quests, and engage in combat.
+
+character_manager.py
+Handles character creation, loading, saving, leveling, stat updates, and gold management. Characters are stored as dictionaries for simplicity and easy serialization.
+
+inventory_system.py
+Implements item storage, equipment handling, and consumable usage. Supports adding/removing items, equipping gear, and applying item effects.
+
+quest_handler.py
+Manages quest acceptance, validation, prerequisite checking, and marking quests as completed. Ensures characters meet minimum level and prerequisite quest requirements.
+
+combat_system.py
+Controls turn-based combat, enemy generation, attack resolution, and reward distribution. Supports the required enemies (goblin, orc, dragon) with customizable stats.
+
+game_data.py
+Loads and validates quest and item data from the /data directory. Ensures data files exist, are correctly formatted, and contain required fields.
+
+custom_exceptions.py
+Contains all custom exception classes used for validation and error handling throughout the project (provided).
+
+data/
+Stores quests.txt, items.txt, and auto-generated player save files.
+
+This structure ensures each module handles a single responsibility, and the entire game passes data cleanly between components.
+
+2. **Exception Strategy:** Describe when/why you raise specific exceptions: Custom exceptions are used throughout the game to ensure clear error reporting and consistent validation:
+
+MissingDataFileError
+Raised when quests or items files do not exist.
+
+InvalidDataFormatError
+Raised when a data file exists but has missing keys, incorrect types, or malformed JSON.
+
+CorruptedDataError
+Raised when a file cannot be read or parsed due to unexpected errors.
+
+InvalidCharacterClassError
+Raised during character creation if the class name does not match the required four classes.
+
+InvalidSaveDataError / SaveFileCorruptedError
+Raised when loading a save file that is missing required fields or is improperly formatted.
+
+CharacterDeadError
+Raised when attempting actions (e.g., combat) with a character at 0 HP.
+
+QuestRequirementsNotMetError
+Raised if a character tries to accept a quest without meeting level or prerequisite requirements.
+
+ItemNotFoundError / InventoryEmptyError
+Raised when accessing or using items that do not exist.
+
+This strategy ensures failures are explicit, easy to diagnose, and predictable for testing and integration modules.
+3. **Design Choices:** Justify major decisions: Several key decisions were made to balance simplicity, clarity, and test requirements:
+Dictionary-based game objects
+Characters, quests, items, and enemies are stored as dictionaries instead of custom classes. This keeps the project aligned with material covered in class and simplifies JSON serialization.
+Modular organization
+Each core system has its own file, enabling isolated testing, clearer logic, and simpler debugging.
+Predictable function signatures
+All functions match required signatures from the assignment tests. This ensures compatibility with the autograder and expected integration behavior. Flexible enemy and item stats: Required enemies (goblin, orc, dragon) exist, but their stats are customizable to allow creative balancing and future extensions. Safe file operations: Load, save, and validation procedures are wrapped in exceptions to prevent undefined behavior or silent failures. Incremental expansion, Optional creative mechanics (e.g., critical hits, abilities) were designed to layer on top of a working core system so they do not break required features.
+
+4. **AI Usage:** Detail what AI assistance you used: AI assistance was used in the following ways: Reviewing error messages from tests and identifying missing or incorrect function signatures. Helping design consistent validation logic for quests, items, and character data. Assisting with refactoring code to ensure proper exception handling. Drafting explanatory comments and improving code organization for readability. Producing documentation text (such as this README section) for clarity and completeness. All logic was reviewed and tested manually to ensure understanding of every component.
+5. **How to Play:** Instructions for running the game: Create a new character using one of four classes: Warrior, Mage, Rogue, Cleric. Begin quests, battle enemies, and earn XP and gold. Use items, equip weapons and armor, and level up your character. Save and load progress from automatically created files in data/save_games/.The game is designed to be simple, text-based, and modular—perfect for experimentation and creative expansion.
 
 ### What to Submit:
 
